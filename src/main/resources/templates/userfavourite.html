@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Learn English | Favourites</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <ul class="nav justify-content-end result">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/aboutus.html">About us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/features.html">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="/userprofile.html">
+                    <i class="fa-solid fa-user"></i><span data-th-text="' '+${username}"></span>
+                </a>
+            </li>
+            <li>
+                <form method="GET" action="/authenticate/logout" >
+                    <button class="btn btn-outline-primary" type="submit">
+                        logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </header>
+    <h1 class="display-2">Your Favourite Word List</h1>
+    <div data-th-if="${isAdded}">
+        <div class="alert alert-primary" role="alert">
+            The word: <span data-th-text="${favWord}"></span> has been added to your word list.
+        </div>
+    </div>
+    <div data-th-unless="${isAdded}">
+        <div class="alert alert-secondary" role="alert">
+            The word: <span data-th-text="${favWord}"></span> was not added.
+        </div>
+    </div>
+</body>
+</html>
