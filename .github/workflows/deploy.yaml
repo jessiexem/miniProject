@@ -15,5 +15,5 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: jglearnenglish
-          heroku_email: ${{ secrets.email }}
+          heroku_email: ${{ secrets.EMAIL }}
           branch: ${{ github.ref_name }}
