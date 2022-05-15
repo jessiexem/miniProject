@@ -1,6 +1,5 @@
 package sg.nus.iss.demoPAF.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import sg.nus.iss.demoPAF.model.Quiz;
-import sg.nus.iss.demoPAF.repository.QuizRepository;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -20,9 +18,6 @@ import java.util.logging.Logger;
 
 @Service
 public class QuizService {
-
-//    @Autowired
-//    private QuizRepository quizRepo;
 
     @Value("${QUIZ_API_KEY}")
     private String apiKey;
@@ -98,6 +93,6 @@ public class QuizService {
         sess.setAttribute("userScore",score);
         sess.setAttribute("userInput",userInput);
     }
-    
+
 
 }
