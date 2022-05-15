@@ -21,8 +21,8 @@ import java.util.logging.Logger;
 @Service
 public class QuizService {
 
-    @Autowired
-    private QuizRepository quizRepo;
+//    @Autowired
+//    private QuizRepository quizRepo;
 
     @Value("${QUIZ_API_KEY}")
     private String apiKey;
@@ -99,5 +99,8 @@ public class QuizService {
         sess.setAttribute("userInput",userInput);
     }
 
+    public boolean insertQuizActivityStart(int userId,String area,int difficultyLevel){
+        return quizRepo.insertStartQuizActivity(userId,area,difficultyLevel);
+    }
 
 }
