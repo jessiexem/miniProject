@@ -3,23 +3,27 @@ package sg.nus.iss.demoPAF.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
+import sg.nus.iss.demoPAF.controller.MainController;
 import sg.nus.iss.demoPAF.exception.UserLoginException;
 import sg.nus.iss.demoPAF.model.User;
 import sg.nus.iss.demoPAF.repository.UserRepository;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class UserService {
 
     @Autowired
-    UserRepository userRepo;
+    private UserRepository userRepo;
+
+    private final Logger logger = Logger.getLogger(UserService.class.getName());
 
     public boolean userLogin(User user) throws UserLoginException {
 
         SqlRowSet result = userRepo.authenticateUserByUsernameAndPassword(user);
 
-        System.out.println(">>> Result_count: "+ result.getInt("result_count"));
+        logger.info(">>> Result_count: "+ result.getInt("result_count"));
 
         int result_count = result.getInt("result_count");
 

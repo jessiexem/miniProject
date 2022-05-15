@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
+import sg.nus.iss.demoPAF.controller.MainController;
 import sg.nus.iss.demoPAF.model.User;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import static sg.nus.iss.demoPAF.repository.Queries.*;
 
@@ -17,6 +19,8 @@ public class UserRepository {
     @Autowired
     JdbcTemplate template;
 
+    private final Logger logger = Logger.getLogger(UserRepository.class.getName());
+
     public SqlRowSet authenticateUserByUsernameAndPassword(User user) {
 
         SqlRowSet result = template.queryForRowSet(SQL_AUTHENTICATE_USER,
@@ -24,7 +28,7 @@ public class UserRepository {
                 user.getPassword());
 
         if(!result.next()) {
-            System.out.println("No result is returned from SQL query");
+            logger.severe("No result is returned from SQL query");
             throw new RuntimeException();
         }
 
@@ -34,7 +38,7 @@ public class UserRepository {
     public Optional<User> findUserByUsername(String username) {
         final SqlRowSet rs = template.queryForRowSet(SQL_SELECT_USER_BY_USERNAME,username);
         if(!rs.first()) {
-            System.out.println(">>>> UserRepository: findUserByUsername: no data found");
+            logger.warning(">>>> UserRepository: findUserByUsername: no data found");
             return Optional.empty();
         }
         else return Optional.of(User.create(rs));

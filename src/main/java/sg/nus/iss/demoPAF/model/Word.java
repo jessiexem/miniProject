@@ -7,11 +7,13 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import sg.nus.iss.demoPAF.controller.MainController;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Word {
 
@@ -48,6 +50,8 @@ public class Word {
 
     public void setMeaning(List<Meaning> meaning) { this.meaning = meaning;}
 
+    private static final Logger logger = Logger.getLogger(Word.class.getName());
+
     public static List<Word> create(String json) {
 
         InputStream is = new ByteArrayInputStream(json.getBytes());
@@ -65,7 +69,7 @@ public class Word {
             String jsonPathPhoneticsPath = "$[0].phonetics.[1].text";
             jsonPathPhonetics = jsonContext.read(jsonPathPhoneticsPath);
         } catch (PathNotFoundException e) {
-            System.out.println("jsonPath for phonetic/audio not found");
+            logger.warning("jsonPath for phonetic/audio not found");
         }
 
         List<Word> wordList = new ArrayList<>();

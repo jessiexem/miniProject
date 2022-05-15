@@ -32,6 +32,13 @@ public class User {
         this.password = password;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User() {};
+
     public static User create(SqlRowSet rs) {
         User user = new User();
         user.setUserId(rs.getInt("user_id"));

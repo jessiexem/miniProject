@@ -10,38 +10,37 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <ul class="nav justify-content-end result">
-            <li class="nav-item">
-                <a class="nav-link" href="/protected/activity/home">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/aboutus.html">About us</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/features.html">Features</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="/userprofile.html">
-                    <i class="fa-solid fa-user"></i><span data-th-text="' '+${username}"></span>
-                </a>
-            </li>
-            <li>
-                <form method="GET" action="/authenticate/logout" >
-                    <button class="btn btn-outline-primary" type="submit">
-                        logout
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </header>
+<header>
+    <ul class="nav justify-content-end result">
+        <li class="nav-item">
+            <a class="nav-link" href="/protected/activity/home">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/aboutus.html">About us</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/features.html">Features</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="/userprofile.html">
+                <i class="fa-solid fa-user"></i><span data-th-text="' '+${username}"></span>
+            </a>
+        </li>
+        <li>
+            <form method="GET" action="/authenticate/logout" >
+                <button class="btn btn-outline-primary" type="submit">
+                    logout
+                </button>
+            </form>
+        </li>
+    </ul>
+</header>
 
-    <div class="container">
-        <h1 class="display-4">Welcome!</h1>
-        <h1 data-th-text="${message}" class="display-4"></h1>
-        <hr>
-        <h3 class="display-5">Start learning by searching a word:</h3>
-<!--        <form action="/search" method="post">-->
+<div class="container">
+    <h2 class="display-5">Activity Hub</h2>
+    <hr>
+    <div class="yellow">
+        <h3 class="display-5">What word do you want to look up?</h3>
         <form action="/protected/search" method="post">
             <div class="mb-3">
                 <div class="search">
@@ -53,6 +52,8 @@
             </div>
         </form>
         <hr>
+    </div>
+    <div class="yellow">
         <h3 class="display-5">Or take a quiz:</h3>
         <form action="/protected/quiz/game" method="post">
             <label for="area">Select a test to generate quiz:</label>
@@ -73,6 +74,7 @@
             <button type="submit" class="btn btn-outline-primary">Take Quiz</button>
         </form>
     </div>
+</div>
 
 
 </body>

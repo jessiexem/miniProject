@@ -13,10 +13,7 @@
     <header>
         <ul class="nav justify-content-end result">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/login.html">Login</a>
+                <a class="nav-link" href="/protected/activity/home">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/aboutus.html">About us</a>
@@ -24,17 +21,37 @@
             <li class="nav-item">
                 <a class="nav-link" href="/features.html">Features</a>
             </li>
-            <!--            <li class="nav-item">-->
-            <!--                <a class="nav-link disabled">Disabled</a>-->
-            <!--            </li>-->
+            <li class="nav-item">
+                <a class="nav-link disabled" href="/userprofile.html">
+                    <i class="fa-solid fa-user"></i><span data-th-text="' '+${username}"></span>
+                </a>
+            </li>
+            <li>
+                <form method="GET" action="/authenticate/logout" >
+                    <button class="btn btn-outline-primary" type="submit">
+                        logout
+                    </button>
+                </form>
+            </li>
         </ul>
     </header>
 
-    <figure class="text-center">
-        <blockquote class="blockquote">
-            <p>Sorry pal, we couldn't find definitions for the word you were looking for.
-                You can try the search again at later time or head to the web instead.</p>
-        </blockquote>
-    </figure>
+    <div class="no-definition-main">
+        <figure class="text-center">
+            <blockquote class="blockquote">
+                <p>Sorry pal, we couldn't find definitions for the word you were looking for.
+                    You can try the search again at later time or head to the web instead.</p>
+            </blockquote>
+        </figure>
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <form method="GET" action="/protected/activity/home">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search another word
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

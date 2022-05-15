@@ -14,5 +14,9 @@ public interface Queries {
     public static final String SQL_INSERT_FAVOURITE_BY_USERID =
             "insert into favourite (user_id, word) values (?,?);";
 
+    public static final String SQL_SELECT_ALL_FAVOURITE_BY_USER_ORDER_BY_CREATED_DATE =
+            "select word from favourite where user_id=? order by created_date desc limit ? offset ?;";
 
+    public static final String SQL_INSERT_QUIZ_ACTIVITY_START =
+            "insert into user_quiz_activity (user_id, test_type, difficulty_level) values (?, ?, ?);";
 }

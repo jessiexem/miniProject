@@ -13,7 +13,7 @@
     <header>
         <ul class="nav justify-content-end result">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/protected/activity/home">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/aboutus.html">About us</a>
@@ -42,9 +42,20 @@
         </div>
     </div>
     <div data-th-unless="${isAdded}">
-        <div class="alert alert-secondary" role="alert">
-            The word: <span data-th-text="${favWord}"></span> was not added.
+        <div class="alert alert-warning" role="alert">
+            The word: <span data-th-text="${favWord}"></span> has already been added before.
         </div>
+    </div>
+
+    <ul class="list-group" data-th-each="f:${favList}">
+        <li class="list-group-item" data-th-text="${f}"></li>
+    </ul>
+    <div>
+        <form method="GET" action="/protected/activity/home" >
+            <button class="btn btn-outline-primary" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i> Search another word
+            </button>
+        </form>
     </div>
 </body>
 </html>

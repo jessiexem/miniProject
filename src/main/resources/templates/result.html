@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" data-th-href="@{/style.css}">
 </head>
 <body>
     <header>
         <ul class="nav justify-content-end result">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/protected/activity/home">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/aboutus.html">About us</a>
@@ -37,10 +37,10 @@
     </header>
     <div data-th-each="w:${wordList}" class="card" style="width: 80rem;">
         <div class="card-body">
-            <h3 data-th-text="${word}" class="card-title">Card title</h3>
-            <form action="/favourite" method="post">
+            <h3 data-th-text="${word}" class="card-title"></h3>
+            <form action="/protected/favourite" method="post">
                 <input type="hidden" name="favWord" data-th-value="${word}">
-                <button type="submit" class="btn btn-outline-primary favourite">Add to Favourites <i class="fa-solid fa-heart"></i></button>
+                <button type="submit" class="btn btn-outline-primary favourite"><i class="fa-solid fa-heart"></i> Add to Favourites </button>
             </form>
             <span data-th-if="${w.phonetic}">
                 <p data-th-text="${w.phonetic}"></p>
@@ -69,8 +69,14 @@
                 </div>
             </div>
         </div>
+        <div>
+            <form method="GET" action="/protected/activity/home" >
+                <button class="btn btn-outline-primary" type="submit">
+                    Back to Activity Hub
+                </button>
+            </form>
+        </div>
         <br>
-
     </div>
 
 </body>

@@ -3,20 +3,21 @@ package sg.nus.iss.demoPAF.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import sg.nus.iss.demoPAF.exception.UserLoginException;
 import sg.nus.iss.demoPAF.model.User;
 import sg.nus.iss.demoPAF.service.UserService;
-
 import javax.servlet.http.HttpSession;
+import java.util.logging.Logger;
 
 @Controller
 public class MainController {
 
     @Autowired
     UserService userSvc;
+
+    private final Logger logger = Logger.getLogger(MainController.class.getName());
 
     @GetMapping("/")
     public String showHomePage() {
@@ -25,7 +26,7 @@ public class MainController {
 
     @GetMapping("/authenticate/logout")
     public ModelAndView getLogout(HttpSession sess) {
-        System.out.println("in getLogoutController");
+        logger.entering("MainController","in getLogoutController");
         sess.invalidate();
 
         ModelAndView mav = new ModelAndView();
@@ -36,7 +37,7 @@ public class MainController {
 
     @PostMapping("/authenticate")
     public ModelAndView userLogin(@ModelAttribute User user, HttpSession sess) {
-        System.out.println("in the UserController");
+        logger.entering("MainController","in UserController");
 
         ModelAndView mav = new ModelAndView();
 
@@ -58,6 +59,7 @@ public class MainController {
             mav = new ModelAndView("redirect:/protected/login/success");
 
         } catch (UserLoginException ex) {
+            logger.severe("login failure");
             mav.addObject("message", "Error: %s".formatted(ex.getReason()));
             mav.setStatus(HttpStatus.UNAUTHORIZED);
             mav.setViewName("loginfailure");
@@ -69,23 +71,4 @@ public class MainController {
         return mav;
     }
 
-    @PostMapping("/search")
-    @GetMapping("/search")
-    public ModelAndView searchWord(@RequestBody MultiValueMap<String,String> payload,HttpSession sess) {
-        String term = payload.getFirst("search");
-        String favWord = (String) sess.getAttribute("favWord");
-        if(favWord!=null) {
-            sess.removeAttribute("favWord");
-        }
-        sess.setAttribute("searchTerm",term);
-        return new ModelAndView("redirect:/protected/search/result");
-    }
-
-    @PostMapping("/favourite")
-    @GetMapping("/favourite")
-    public ModelAndView addFavourite(@RequestBody MultiValueMap<String,String> payload,HttpSession sess) {
-        String favWord = payload.getFirst("favWord");
-        sess.setAttribute("favWord",favWord);
-        return new ModelAndView("redirect:/protected/add/favourite");
-    }
 }
