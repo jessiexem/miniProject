@@ -98,9 +98,6 @@ public class QuizService {
         sess.setAttribute("userScore",score);
         sess.setAttribute("userInput",userInput);
     }
-
-    public boolean insertQuizActivityStart(int userId,String area,int difficultyLevel){
-        return quizRepo.insertStartQuizActivity(userId,area,difficultyLevel);
-    }
+    
 
 }
