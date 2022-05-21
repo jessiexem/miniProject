@@ -1,13 +1,13 @@
 package sg.nus.iss.demoPAF.service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import sg.nus.iss.demoPAF.model.User;
 import sg.nus.iss.demoPAF.model.Word;
 import sg.nus.iss.demoPAF.repository.WordRepository;
 
@@ -17,16 +17,32 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class WordServiceTest {
 
     @Autowired
     private WordService wordService;
 
-//    @SpyBean
-    @MockBean
+    @Autowired
+    private UserService userService;
+
+    private User user;
+
+    @BeforeAll
+    void createUserTester() {
+        userService.createUser("tester95","abc123","tester",
+                "tan","tester@gmail.com","F");
+
+        Optional<User> opt = userService.findUserByUsername("tester95");
+        user = opt.get();
+    }
+
+    @Autowired
     private WordRepository wordRepo;
 
     @Test
+    @Order(1)
     void shouldReturnListOfWords() {
         String searchTerm = "happy";
         Optional<List<Word>> opt = wordService.searchWord(searchTerm);
@@ -34,6 +50,7 @@ public class WordServiceTest {
     }
 
     @Test
+    @Order(2)
     void shouldNotReturnListOfWords() {
         String searchTerm = "sss";
         Optional<List<Word>> opt = wordService.searchWord(searchTerm);
@@ -41,43 +58,27 @@ public class WordServiceTest {
     }
 
     @Test
-    void shouldNotAddFavWord() {
-        int userId = 1;
-        String favWord = "favourite";
-        Mockito.when(wordRepo.getWordByUser(anyInt(),anyString())).thenReturn(1);
-        Mockito.when(wordRepo.insertFavouriteWordByUserId(anyInt(),anyString())).thenReturn(false);
-        boolean isAdded = wordService.addFavWord(userId,favWord);
-        Assertions.assertFalse(isAdded);
-    }
-
-    @Test
+    @Order(3)
     void shouldAddFavWord() {
-        int userId = 1;
+        int userId = user.getUserId();
         String favWord = "favourite";
-        Mockito.when(wordRepo.getWordByUser(anyInt(),anyString())).thenReturn(0);
-        Mockito.when(wordRepo.insertFavouriteWordByUserId(anyInt(),anyString())).thenReturn(true);
         boolean isAdded = wordService.addFavWord(userId,favWord);
         Assertions.assertTrue(isAdded);
     }
 
-//for SpyBean
-//    @Test
-//    void shouldNotAddFavWord() {
-//        int userId = 1;
-//        String favWord = "favourite";
-//        Mockito.doReturn(1).when(wordRepo).getWordByUser(anyInt(),anyString());
-//        boolean isAdded = wordService.addFavWord(userId,favWord);
-//        Assertions.assertFalse(isAdded);
-//    }
+    @Test
+    @Order(4)
+    void shouldGetFavouriteByUser() {
+        Optional<List<String>> opt = wordService.getAllFavouriteByUser(user.getUserId());
+        List<String> favList = opt.get();
 
-//for SpyBean
-//    @Test
-//    void shouldAddFavWord() {
-//        int userId = 1;
-//        String favWord = "favourite";
-//        Mockito.doReturn(0).when(wordRepo).getWordByUser(anyInt(),anyString());
-//        Mockito.doReturn(true).when(wordRepo).insertFavouriteWordByUserId(anyInt(),anyString());
-//        boolean isAdded = wordService.addFavWord(userId,favWord);
-//        Assertions.assertTrue(isAdded);
-//    }
+        Assertions.assertEquals(1,favList.size());
+    }
+
+    @AfterAll
+    void deleteUserWilma() {
+        wordService.deleteAllFavouriteByUser(user.getUserId());
+        userService.deleteUser(user.getUserId());
+    }
+
 }

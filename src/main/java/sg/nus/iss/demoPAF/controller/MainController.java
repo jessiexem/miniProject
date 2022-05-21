@@ -1,6 +1,7 @@
 package sg.nus.iss.demoPAF.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import sg.nus.iss.demoPAF.exception.UserLoginException;
 import sg.nus.iss.demoPAF.model.User;
 import sg.nus.iss.demoPAF.service.UserService;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Controller
@@ -47,8 +49,8 @@ public class MainController {
 
             //not successful
             if (!login) {
-                mav.addObject("message", ("Incorrect username or password. " +
-                        "Please check your credentials for %s").formatted(user.getUsername()));
+                mav.addObject("message",
+                        "Incorrect username or password. Please try again.");
                 mav.setStatus(HttpStatus.UNAUTHORIZED);
                 mav.setViewName("loginfailure");
                 return mav;
@@ -66,6 +68,42 @@ public class MainController {
             ex.printStackTrace();
             return mav;
 
+        }
+
+        return mav;
+    }
+
+    @PostMapping("/register")
+    public ModelAndView registerUser(@ModelAttribute User user) {
+
+        ModelAndView mav = new ModelAndView();
+
+        //check if username already exists
+        Optional<User> optUser = userSvc.findUserByUsername(user.getUsername());
+
+        mav.setStatus(HttpStatus.CREATED);
+        mav.setViewName("registerResult");
+
+        //should not create if username already exists
+        if (optUser.isPresent()) {
+            logger.severe("Username already exists. Cannot create user.");
+            mav.addObject("msg","Username already exists. Please try again.");
+            mav.addObject("isAdded", false);
+            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            return mav;
+        }
+
+        try {
+            userSvc.createUser(user.getUsername(),user.getPassword(),user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getGender());
+
+            mav.addObject("isAdded",true);
+            mav.addObject("username", user.getUsername());
+        } catch (Exception e) {
+            logger.severe("Unable to create user");
+            mav.addObject("isAdded", false);
+            mav.addObject("msg","Unable to create account. Please try again.");
+            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return mav;

@@ -50,4 +50,9 @@ public class WordRepository {
             return Optional.of(wordList);
         }
     }
+
+    public boolean deleteFavouriteByUser(int userId) {
+        int isDeleted = template.update(SQL_DELETE_FAVOURITE_BY_USER_ID,userId);
+        return isDeleted>0;
+    }
 }

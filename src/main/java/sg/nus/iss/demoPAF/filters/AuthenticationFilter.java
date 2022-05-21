@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@Component
 public class AuthenticationFilter implements Filter {
 
     private final Logger logger = Logger.getLogger(AuthenticationFilter.class.getName());

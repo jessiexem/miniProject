@@ -1,19 +1,17 @@
 name: Deploy to Heroku
 on:
-  push:
-    tags:
-      - 'v*'
-      - '!v*-alpha'
+  release:
+    types: [published]
 jobs:
   deploy_to_heroku:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout src
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Deploy to Heroku
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: jglearnenglish
+          heroku_app_name: jgenglishapp
           heroku_email: ${{ secrets.EMAIL }}
           branch: ${{ github.ref_name }}

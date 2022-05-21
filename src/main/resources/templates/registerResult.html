@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Definition & Meaning</title>
+    <title>Learn English | User Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-    <link rel="stylesheet" data-th-href="@{/style.css}">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -24,77 +24,28 @@
     <nav class="navbar navbar navbar-light justify-content-end" style="background-color: #29648A";>
         <div class="container-fluid">
             <a class="nav-link link-light" href="#">LEARN ENGLISH</a>
-            <ul class="nav justify-content-end result">
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="/protected/activity/home">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="/aboutus.html">About us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="/protected/dashboard">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="#">
-                        <i class="fa-solid fa-user"></i><span data-th-text="' '+${username}"></span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="/authenticate/logout">Logout</a>
-                </li>
-            </ul>
         </div>
     </nav>
-    <br>
-    <div class="row">
-        <div class="col-sm-6" style="background-color: white;">
-            <div data-th-each="w:${wordList}" class="card">
-                <div class="card-body">
-                    <h3 data-th-text="${word}" class="card-title"></h3>
-                    <form action="/protected/favourite" method="post">
-                        <input type="hidden" name="favWord" data-th-value="${word}">
-                        <button type="submit" class="btn btn-outline-primary favourite"><i class="fa-solid fa-heart"></i> Add to Favourites </button>
-                    </form>
-                    <span data-th-if="${w.phonetic}">
-                <p data-th-text="${w.phonetic}"></p>
-            </span>
-                    <span data-th-if="${w!= null && #strings.isEmpty(w.audio)==false}">
-                <audio controls>
-                <source data-th-src="${w.audio}" type="audio/mp3">
-                </audio>
-            </span>
-                    <div data-th-each="m:${w.meaning}">
-                        <br>
-                        <hr>
-                        <h5 data-th-text="${m.partOfSpeech}"></h5>
-                        <div data-th-each="def,iterator:${m.definitions}">
-                            <h4 data-th-text="${iterator.index+1}+'. '+${def.definition}"></h4>
-                            <span data-th-if="${def.example}">
-                        <p data-th-text="'example: '+${def.example}"></p>
-                    </span>
-                        </div>
-                        <div data-th-if="${not #lists.isEmpty(m.synonyms)}">
-                            <p>Synonyms:
-                                <span data-th-each="syn:${m.synonyms}">
-                            <span data-th-text="${syn}+','"></span>
-                        </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <form method="GET" action="/protected/activity/home" >
-                        <button class="btn btn-outline-primary" type="submit">
-                            Back to Activity Hub
-                        </button>
-                    </form>
-                </div>
-                <br>
-            </div>
+    <div class="container w-40 p-3 row justify-content-start">
+        <h1 class="display-4">Welcome to LearnEnglish! </h1>
+    </div>
+    <div data-th-if="${isAdded}">
+        <div class="alert alert-primary" role="alert">
+            User Account with username : <span data-th-text="${username}"></span> has been created.
         </div>
-        <div class="col-sm-6">
-            <img src="https://images.unsplash.com/photo-1494809610410-160faaed4de0?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=988" class="img-fluid pic" alt="...">
+        <div>
+            <form method="GET" action="/" >
+                <button class="btn btn-outline-primary" type="submit">
+                    Back to Login
+                </button>
+            </form>
         </div>
+    </div>
+    <div data-th-unless="${isAdded}">
+        <div class="alert alert-warning" role="alert">
+            <h3 data-th-text="${msg}"></h3>
+        </div>
+        <a class="link-primary" href="/register.html">Back to Sign up.</a>
     </div>
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">

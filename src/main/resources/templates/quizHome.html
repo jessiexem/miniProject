@@ -10,27 +10,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container w-40 p-3 row justify-content-start">
-        <form action="/quizTest" method="post">
-        <h2 class="display-4">Let's Level Up Your Vocabulary!</h2>
-        <label for="area">Select a test to generate quiz:</label>
-        <select id="area" class="form-select" aria-label="Default select example">
+<!--    <div class="container w-40 p-3 row justify-content-start">-->
+<!--        <form action="/quizTest" method="post">-->
+<!--        <h2 class="display-4">Let's Level Up Your Vocabulary!</h2>-->
+<!--        <label for="area">Select a test to generate quiz:</label>-->
+<!--        <select id="area" class="form-select" aria-label="Default select example">-->
 
-            <option value="es">Elementary School</option>
-            <option value="ms">Middle School</option>
-            <option value="hs">High School</option>
-            <option value="sat" selected="selected">SAT</option>
-            <option value="gmat">GMAT</option>
-            <option value="teps">TEPS</option>
-            <option value="overall">Overall</option>
-        </select>
-        <label for="level">Select the difficulty level of the test::</label>
-        <select id="level" class="form-select" aria-label="Default select example">
-            <option data-th-each="i : ${#numbers.sequence(1, 10)}" data-th-value="${i}" data-th-text="${i}"></option>
-        </select>
-        <button type="submit" class="btn btn-outline-primary">Take Quiz</button>
-        </form>
-    </div>
+<!--            <option value="es">Elementary School</option>-->
+<!--            <option value="ms">Middle School</option>-->
+<!--            <option value="hs">High School</option>-->
+<!--            <option value="sat" selected="selected">SAT</option>-->
+<!--            <option value="gmat">GMAT</option>-->
+<!--            <option value="teps">TEPS</option>-->
+<!--            <option value="overall">Overall</option>-->
+<!--        </select>-->
+<!--        <label for="level">Select the difficulty level of the test::</label>-->
+<!--        <select id="level" class="form-select" aria-label="Default select example">-->
+<!--            <option data-th-each="i : ${#numbers.sequence(1, 10)}" data-th-value="${i}" data-th-text="${i}"></option>-->
+<!--        </select>-->
+<!--        <button type="submit" class="btn btn-outline-primary">Take Quiz</button>-->
+<!--        </form>-->
+<!--    </div>-->
 
 </body>
 </html>

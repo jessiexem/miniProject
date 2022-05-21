@@ -83,4 +83,7 @@ public class WordService {
         return wordRepo.getAllFavouriteByUser(userId,limit,offset);
     }
 
+    public boolean deleteAllFavouriteByUser(int userId) {
+        return wordRepo.deleteFavouriteByUser(userId);
+    }
 }
