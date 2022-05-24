@@ -5,4 +5,4 @@
 
 ![Coverage](https://jgclass.sgp1.digitaloceanspaces.com/coverage/miniProject/jacoco.svg)
 
-Heroku app: https://jgenglishapp.herokuapp.com/
+Heroku app: https://jgvocablify.herokuapp.com/
