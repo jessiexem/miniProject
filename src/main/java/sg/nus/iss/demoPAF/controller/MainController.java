@@ -73,6 +73,14 @@ public class MainController {
         return mav;
     }
 
+    @GetMapping("/register")
+    public ModelAndView showRegistration() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("register");
+        mav.setStatus(HttpStatus.OK);
+        return mav;
+    }
+
     @PostMapping("/register")
     public ModelAndView registerUser(@ModelAttribute User user) {
 

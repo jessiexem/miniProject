@@ -51,7 +51,12 @@ public class WordRepository {
         }
     }
 
-    public boolean deleteFavouriteByUser(int userId) {
+    public boolean deleteFavouriteByUser(String word, int userId) {
+        int isDeleted = template.update(SQL_DELETE_FAV_WORD_BY_USER_ID,word,userId);
+        return isDeleted>0;
+    }
+
+    public boolean deleteAllFavouriteByUser(int userId) {
         int isDeleted = template.update(SQL_DELETE_FAVOURITE_BY_USER_ID,userId);
         return isDeleted>0;
     }

@@ -6,22 +6,24 @@ body {
     padding: 20px;
 }
 
+
 .qns {
     background-color: #F7F9FB;
     margin: 10px;
 }
 
 p {
-    font-style: italic;
+/*    font-style: italic;*/
     padding: 10px;
+    font-size: 18px;
 }
 
 .blockquote {
   padding: 200px 0;
 }
 
-.white {
-    color: white;
+.title {
+    color: #4267B2;
 }
 
 .green {
@@ -39,11 +41,31 @@ p {
 }
 
 .banner_search {
-    background-image: url('https://images.unsplash.com/photo-1561651188-d207bbec4ec3?ixlib=rb-1.2.1&raw_url=true&q=80&fm=jpg&crop=entropy&cs=tinysrgb&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374');
+    background-image: url('https://cdn.create.vista.com/api/media/medium/244754778/stock-photo-top-view-wooden-cubes-letters?token=');
+    background-size:cover;
+    padding: 10px;
 }
 
 .banner_quiz {
-    background-image: url('https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470');
+    background-image: url('https://images.unsplash.com/photo-1518130242561-edb760734bee?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035');
+    background-size:cover;
+    padding: 10px;
+}
+
+.banner_fav {
+    background-image: url('https://images.unsplash.com/photo-1580727119923-7ece274c81c5?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470');
+    height: 250px;
+}
+
+.banner_error {
+    background-size:cover;
+    padding: 10px;
+}
+
+.banner_fav .btn-holder,
+.banner_quiz .btn-holder, {
+  justify-content: flex-end;
+  display: flex;
 }
 
 .quiz,
@@ -52,5 +74,8 @@ p {
 .dashboard,
 .chart {
     margin-top: 30px;
+    padding-left: 20px;
 }
+
+
 

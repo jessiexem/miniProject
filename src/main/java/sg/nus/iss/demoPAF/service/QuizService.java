@@ -36,9 +36,9 @@ public class QuizService {
 
     private static final String API_HOST = "twinword-word-association-quiz.p.rapidapi.com";
 
-    private static final String PAST_5_SCORE_CHART_URL = "https://quickchart.io/chart/render/zm-c2eab983-b47e-422c-bffe-79b845ff93fd";
+    private static final String PAST_5_SCORE_CHART_URL = "https://quickchart.io/chart/render/zm-dbad4dd4-d2c2-404d-b482-8f9bd89c297d";
 
-    private static final String AVG_SCORE_BY_DIFFICULTY_CHART_URL = "https://quickchart.io/chart/render/zm-6c54888a-b3f2-4a80-9919-6b66b7dbe9c8";
+    private static final String AVG_SCORE_BY_DIFFICULTY_CHART_URL = "https://quickchart.io/chart/render/zm-fda12972-e05d-432d-8298-99b4aa7db69e";
 
     public Optional<List<Quiz>> getQuiz(String area, Integer level) {
 
@@ -115,17 +115,25 @@ public class QuizService {
 
     public String createScoreChartForPast5Attempts(int userId) {
 
-        String data = quizRepo.getLast5ScoreByUser(userId);
+        HashMap<String,String> map = quizRepo.getLast5ScoreByUser(userId);
 
-        logger.info("getLast5ScoreByUser - Data: "+data);
+        if (map ==null) {
+            return null;
+        }
+        String scoreData = map.get("scoreListString");
+        String levelData = map.get("levelListString");
 
-        if (data == null) {
+        logger.info("getLast5ScoreByUser - scoreData: "+scoreData);
+        logger.info("getLast5ScoreByUser - levelData: "+scoreData);
+
+        if (scoreData == null || levelData == null) {
             return null;
         }
 
         String url = UriComponentsBuilder
                 .fromUriString(PAST_5_SCORE_CHART_URL)
-                .queryParam("data1",data)
+                .queryParam("data1",scoreData)
+                .queryParam("data2",levelData)
                 .toUriString();
 
         return url;

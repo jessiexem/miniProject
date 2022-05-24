@@ -33,7 +33,7 @@ public interface Queries {
             "update user_quiz_activity set quiz_score = ?, end_time = current_timestamp where quiz_activity_id = ?;";
 
     public static final String SQL_SELECT_SCORE_FOR_PAST_5_ATTEMPTS =
-            "select quiz_score from user_quiz_activity where user_id=? order by end_time desc limit 5;";
+            "select difficulty_level, quiz_score from user_quiz_activity where user_id=? order by end_time desc limit 5;";
 
     public static final String SQL_SELECT_AVG_SCORE_BY_DIFFICULTY_LEVEL_BY_USER =
             "select difficulty_level, CAST(avg(quiz_score) AS DECIMAL (4,2)) as avg_score from user_quiz_activity where user_id=? group by difficulty_level order by difficulty_level asc;";
@@ -41,6 +41,8 @@ public interface Queries {
     public static final String SQL_SELECT_AVG_SCORE_BY_DIFFICULTY_LEVEL_ALL_USER =
             "select difficulty_level, CAST(avg(quiz_score) AS DECIMAL (4,2)) as avg_score from user_quiz_activity group by difficulty_level order by difficulty_level asc;";
 
+    public static final String SQL_DELETE_FAV_WORD_BY_USER_ID =
+            "delete from favourite where word=? and user_id=?";
 
     //for testing
     public static final String SQL_DELETE_USER_DETAILS_BY_USER_ID =

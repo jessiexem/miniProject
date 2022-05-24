@@ -63,7 +63,7 @@ public class Word {
         String jsonPathAudio = null;
         String jsonPathPhonetics = null;
         try {
-            String jsonPathAudioPath = "$[0].phonetics.[1].audio";
+            String jsonPathAudioPath = "$[0].phonetics.[0].audio";
             jsonPathAudio = jsonContext.read(jsonPathAudioPath);
 
             String jsonPathPhoneticsPath = "$[0].phonetics.[1].text";

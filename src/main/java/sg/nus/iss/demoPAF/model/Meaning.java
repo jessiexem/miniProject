@@ -11,6 +11,7 @@ public class Meaning {
     private String partOfSpeech;
     private List<Definition> definitions;
     private List<String> synonyms;
+    private List<String> antonyms;
 
     public String getPartOfSpeech() {
         return partOfSpeech;
@@ -36,6 +37,14 @@ public class Meaning {
         this.synonyms = synonyms;
     }
 
+    public List<String> getAntonyms() {
+        return antonyms;
+    }
+
+    public void setAntonyms(List<String> antonyms) {
+        this.antonyms = antonyms;
+    }
+
     public static List<Meaning> create(JsonArray meaningsArr) {
 
         List<Meaning> meaningList = new ArrayList<>();
@@ -49,9 +58,13 @@ public class Meaning {
                     meaning.setDefinitions(definitionList);
 
                     List<String> synonymsList = new ArrayList<>();
+                    List<String> antonymsList = new ArrayList<>();
                     JsonArray synonymsArr = m.getJsonArray("synonyms");
+                    JsonArray antonymsArr = m.getJsonArray("antonyms");
                     synonymsArr.stream().forEach(syn -> synonymsList.add(syn.toString()));
+                    antonymsArr.stream().forEach(ant -> antonymsList.add(ant.toString()));
                     meaning.setSynonyms(synonymsList);
+                    meaning.setAntonyms(antonymsList);
                     meaningList.add(meaning);
                 });
 

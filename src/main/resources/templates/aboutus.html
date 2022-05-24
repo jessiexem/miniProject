@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Learn English | WordQuiz Result</title>
+    <title>Learn English | About Us</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -48,41 +48,53 @@
             </ul>
         </div>
     </nav>
-    <div class="row">
-        <div class="col-sm-6" style="background-color: white";>
-            <div class="container quiz">
-                <h1 class="display-4">Your Quiz Score: <span data-th-text="${score}" style="color:#4267B2;" ></span></h1>
-                <h2 class="card-title">Choose the option which is most closely related to the words.</h2>
-                <h2 class="card-title">Area: <span data-th-text="${area}" class="card-title" style="color:Tomato;"></span></h2>
-                <h2 class="card-title">Level: <span data-th-text="${level}" class="card-title" style="color:Tomato;"></span></h2>
-                <div data-th-each="q, qnsIterator:${quizList}" class="qns">
-                    <h3 data-th-text="'Question '+${qnsIterator.index+1} +':'"></h3>
-                    <span data-th-each="a: ${q.questionArray}" data-th-text="${a}+', '"></span>
-                    <br>
-                    <br>
-                    <div class="form-check" data-th-each="opt,optIterator: ${q.optionsArray}">
-                        <div data-th-class="${correctAnswers[qnsIterator.index]==optIterator.index+1? 'green' : ''}">
-                            <fieldset id="'answer'+${qnsIterator.index+1}">
-                                <input class="form-check-input" type="radio" data-th-id="${optIterator.index+1}" data-th-value="${optIterator.index+1}" data-th-name="'answer'+${qnsIterator.index+1}" data-th-checked="${userInput[qnsIterator.index]==optIterator.index+1}? 'checked'" disabled>
-                                <label class="form-check-label" data-th-for="${qnsIterator.index+1}" data-th-text="${opt}"></label>
-                                <a class="link-primary" data-th-href="@{'/protected/search?term='+${opt}}">Learn more</a>
-                            </fieldset>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div>
-                    <form method="GET" action="/protected/activity/home" >
-                        <button class="btn btn-outline-primary" type="submit">
-                            Back to Activity Hub
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <img src="https://images.unsplash.com/photo-1496317899792-9d7dbcd928a1?ixlib=rb-1.2.1&raw_url=true&q=80&fm=jpg&crop=entropy&cs=tinysrgb&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987" class="img-fluid pic" alt="...">
-        </div>
+    <div class="main">
+        <h1 class="display-3">Welcome to <b style="color: #4267B2">LearnEnglish</b></h1>
+        <p><b style="color: #4267B2">LearnEnglish</b> aims to help adult language learners improve their English vocabulary.</p>
+
+        <h2 style="color: #898F9C" class="display-4">How it works</h2>
+        <br>
+        <h3>Dictionary</h3>
+            <p>Use the dictionary feature to get word definitions, synonyms and antonyms, rhymes,
+            audio pronunciation and example sentences.</p>
+
+        <h3>Vocabulary Quiz</h3>
+        <p>Increasing your command of vocabulary can be time-consuming and difficult.
+            <b style="color: #4267B2">LearnEnglish</b>'s vocabulary quiz is an efficient way to radically expand
+            your vocabulary! It can be easily customised to your level, and will save you plenty of time and energy by
+            helping you practice using your existing vocabulary and learn new English words.
+        </p>
+        <figure class="figure">
+            <img src="/images/wordassoc.png" class="figure-img img-fluid rounded" alt="...">
+            <figcaption class="figure-caption">Word associations is very effective to vocabulary learning
+                because it helps people to understand words quickly and memorize them effectively.</figcaption>
+        </figure>
+
+        <p>This is especially useful when it comes to preparing for exams such as:</p>
+        <ul>
+            <li><a href="https://www.ets.org/toeic/test-takers/listening-reading/about">TOEIC</a> : an international standardized test of English language proficiency for non-native speakers</li>
+            <li><a href="https://www.ets.org/gre/revised_general/about">GRE</a> : a standardized test widely taken by Prospective applicants from around the world who are interested in pursuing a master's,
+                specialized master's in business, MBA, JD or doctoral degree</li>
+            <li><a href="https://www.ielts.org/about-ielts/what-is-ielts">IELTS</a> : an English language test for people looking to work, live or study in an English-speaking country</li>
+            <li><a href="https://en.teps.or.kr/about_teps.html">TEPS</a> : an English proficiency test developed by the Language Education Institute at Seoul National University based on years of research
+                and more than 50 years’ experience in assessing language proficiency</li>
+        </ul>
+
+        <figure class="figure">
+            <img src="/images/quizarea.png" class="figure-img img-fluid rounded quiz_area" alt="..." >
+            <figcaption class="figure-caption">Just select your target goal/exam and difficulty level, and a vocabulary quiz will be
+                generated for you.</figcaption>
+        </figure>
+
+        <p><a href="/protected/activity/home">Try</a> it out now!</p>
+
+        <h3>Dashboard</h3>
+        <p>Check your score, assess your performance and see how you stand against other test-takers with the dashboard feature.</p>
+
+        <figure class="figure">
+            <img src="/images/dashboard.png" class="figure-img img-fluid rounded" alt="...">
+            <figcaption class="figure-caption">Assess your past performance with a personalised <a href="/protected/dashboard">dashboard</a>.</figcaption>
+        </figure>
     </div>
 
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">

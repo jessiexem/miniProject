@@ -16,7 +16,6 @@ import sg.nus.iss.demoPAF.service.UserService;
 import sg.nus.iss.demoPAF.service.WordService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Fail.fail;
@@ -205,8 +204,8 @@ public class ControllerTest {
     @Order(7)
     void shouldGetSearchResultPage() {
         RequestBuilder req = MockMvcRequestBuilders.get("/protected/search")
-                .sessionAttr("username", "tester95")
-                .sessionAttr("searchTerm","hello");
+                .queryParam("term","happy")
+                .sessionAttr("username", "tester95");
 
 
         MvcResult result = null;
@@ -225,9 +224,10 @@ public class ControllerTest {
     @Test
     @Order(8)
     void shouldReturnSearchNotFound() {
-        RequestBuilder req = MockMvcRequestBuilders.get("/protected/search")
+        RequestBuilder req = MockMvcRequestBuilders.post("/protected/search")
                 .sessionAttr("username", "tester95")
-                .sessionAttr("searchTerm","sssss");
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("search","sssss");
 
 
         MvcResult result = null;
@@ -289,20 +289,15 @@ public class ControllerTest {
 
     @Test
     @Order(11)
-    void shouldGetAddFavourite() {
+    void shouldGetFavourite() {
         RequestBuilder req = MockMvcRequestBuilders.get("/protected/favourite")
-                .sessionAttr("username", "tester95")
-                .sessionAttr("favWord","hello")
-                .sessionAttr("isAdded",true)
-                .sessionAttr("favList",new ArrayList<String>(Arrays.asList("Hello",
-                        "World")));
-
+                .sessionAttr("username", "tester95");
 
         MvcResult result = null;
         try {
             result = mvc.perform(req).andDo(print())
                     .andExpect(status().isOk())
-                    .andExpect(view().name("userfavourite"))
+                    .andExpect(view().name("favourite"))
                     .andReturn();
 
         } catch (Exception e) {
@@ -396,6 +391,24 @@ public class ControllerTest {
             result = mvc.perform(req).andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(view().name("dashboard"))
+                    .andReturn();
+
+        } catch (Exception e) {
+            fail("failed to perform invocation");
+        }
+    }
+
+    @Test
+    @Order(16)
+    void shouldGetAboutUs() {
+        RequestBuilder req = MockMvcRequestBuilders.get("/protected/about")
+                .sessionAttr("username", "tester95");
+
+        MvcResult result = null;
+        try {
+            result = mvc.perform(req).andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("aboutus"))
                     .andReturn();
 
         } catch (Exception e) {

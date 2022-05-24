@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -46,24 +47,34 @@ public class QuizRepository {
         return deleted>0;
     }
 
-    public String getLast5ScoreByUser(int userId) {
+    public HashMap<String,String> getLast5ScoreByUser(int userId) {
         SqlRowSet result = template.queryForRowSet(SQL_SELECT_SCORE_FOR_PAST_5_ATTEMPTS,userId);
 
         if(!result.isBeforeFirst()) {
             return null;
         }
 
-        List<Integer> list = new ArrayList<>();
+        List<Integer> scoreList = new ArrayList<>();
+        List<Integer> levelList = new ArrayList<>();
         while (result.next()) {
-            list.add(result.getInt("quiz_score"));
+            scoreList.add(result.getInt("quiz_score"));
+            levelList.add(result.getInt("difficulty_level"));
         }
 
-        Collections.reverse(list);
+        Collections.reverse(scoreList);
+        Collections.reverse(levelList);
 
-        String listString = list.stream().map(Object::toString)
+        String scoreListString = scoreList.stream().map(Object::toString)
                 .collect(Collectors.joining(", "));
 
-        return listString;
+        String levelListString = levelList.stream().map(Object::toString)
+                .collect(Collectors.joining(", "));
+
+        HashMap<String,String> map = new HashMap<>();
+        map.put("scoreListString",scoreListString);
+        map.put("levelListString",levelListString);
+
+        return map;
     }
 
     public SqlRowSet getAvgScoreByDifficultyLevelByUser(int userId) {

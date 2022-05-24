@@ -9,7 +9,7 @@ import java.util.List;
 public class Definition {
 
     private String definition;
-//    private List<String> synonyms;
+
     private String example;
 
     public String getDefinition() {
@@ -19,14 +19,6 @@ public class Definition {
     public void setDefinition(String definition) {
         this.definition = definition;
     }
-
-//    public List<String> getSynonyms() {
-//        return synonyms;
-//    }
-//
-//    public void setSynonyms(List<String> synonyms) {
-//        this.synonyms = synonyms;
-//    }
 
     public String getExample() {
         return example;
@@ -47,10 +39,6 @@ public class Definition {
                     if(d.containsKey("example")) {
                         definition.setExample(d.getString("example"));
                     }
-//                    List<String> synonyms = new ArrayList<>();
-//                    JsonArray synonymArr = d.getJsonArray("synonyms");
-//                    synonymArr.stream()
-//                            .forEach(s->synonyms.add(s.toString()));
                     definitionList.add(definition);
                 });
         return definitionList;

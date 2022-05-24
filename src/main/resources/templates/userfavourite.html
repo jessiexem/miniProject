@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" data-th-href="@{/style.css}">
 </head>
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -21,7 +21,7 @@
             <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
         </symbol>
     </svg>
-    <nav class="navbar navbar navbar-light justify-content-end" style="background-color: #29648A";>
+    <nav class="navbar navbar navbar-light justify-content-end" style="background-color: #4267B2";>
         <div class="container-fluid">
             <a class="nav-link link-light" href="#">LEARN ENGLISH</a>
             <ul class="nav justify-content-end result">
@@ -29,10 +29,13 @@
                     <a class="nav-link link-light" href="/protected/activity/home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link link-light" href="/aboutus.html">About us</a>
+                    <a class="nav-link link-light" href="/protected/about">About us</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link link-light" href="/protected/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-light" href="/protected/favourite">Favourite</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link link-light" href="#">
@@ -45,27 +48,83 @@
             </ul>
         </div>
     </nav>
-    <h1 class="display-2">Your Favourite Word List</h1>
-    <div data-th-if="${isAdded}">
-        <div class="alert alert-primary" role="alert">
-            The word: <span data-th-text="${favWord}"></span> has been added to your word list.
+    <div class="main">
+        <h1 class="display-4 title">Your Favourite Word List</h1>
+        <div data-th-if="${isAdded}">
+            <div class="alert alert-primary" role="alert">
+                The word '<span data-th-text="${favWord}"></span>' has been added to your word list.
+            </div>
         </div>
-    </div>
-    <div data-th-unless="${isAdded}">
-        <div class="alert alert-warning" role="alert">
-            The word: <span data-th-text="${favWord}"></span> has already been added before.
+        <div data-th-unless="${isAdded}">
+            <div class="alert alert-warning" role="alert">
+                The word '<span data-th-text="${favWord}"></span>' has already been added before.
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-8">
+                <table class="table">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Word</th>
+                        <th scope="col">Remove from word list?</th>
+                    </tr>
+                    </thead>
+                    <tbody data-th-if="${favList!=null and !favList.isEmpty()}">
+                    <tr data-th-each="f,iterator:${favList}">
+                        <th scope="row" data-th-text="${iterator.index}+1+(${next}-2)*10"></th>
+                        <td><a class="link-dark" data-th-href="@{'/protected/search?term='+${f}}" data-th-text="${f}"></a></td>
+                        <td>
+                            <form action="/protected/remove" method="post">
+                                <input type="hidden" name="word" data-th-value="${f}">
+                                <button class="btn btn-outline-danger" type="submit">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <!--          if there are no results-->
+                    <tbody data-th-unless="${favList!=null and !favList.isEmpty()}">
+                    <tr>
+                        <td colspan="3">There are no results to be displayed.</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td data-th-if="${prev}" colspan="2">
+                            <form action="/protected/favourite" method="get">
+                                <input type="hidden" name="page" data-th-value="${prev}">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    Previous
+                                </button>
+                            </form>
+                        </td>
 
-    <ul class="list-group" data-th-each="f:${favList}">
-        <li class="list-group-item" data-th-text="${f}"></li>
-    </ul>
-    <div>
-        <form method="GET" action="/protected/activity/home" >
-            <button class="btn btn-outline-primary" type="submit">
-                <i class="fa-solid fa-magnifying-glass"></i> Search another word
-            </button>
-        </form>
+                        <td data-th-unless="${prev}" colspan="2"></td>
+
+                        <td data-th-if="${favList!=null and #lists.size(favList)==10}">
+                            <form action="/protected/favourite" method="get">
+                                <input type="hidden" name="page" data-th-value="${next}">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    Next
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <br>
+        <div>
+            <form method="GET" action="/protected/activity/home" >
+                <button class="btn btn-outline-primary" type="submit">
+                    <i class="fa-solid fa-house"></i> Back to Activity Hub
+                </button>
+            </form>
+        </div>
     </div>
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">

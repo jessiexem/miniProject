@@ -49,6 +49,29 @@ public class ProtectedController {
         return mvc;
     }
 
+    @GetMapping("/about")
+    public ModelAndView getAboutUs(HttpSession sess) {
+        String username = (String) sess.getAttribute("username");
+
+        ModelAndView mav = new ModelAndView();
+
+        // get userId
+        Optional<User> optUser = userService.findUserByUsername(username);
+
+        if (optUser.isEmpty()) {
+            logger.severe(">>> addFavourite(): no user with username found");
+            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            mav.setViewName("error");
+            return mav;
+        }
+
+        mav.addObject("username",username);
+        mav.setStatus(HttpStatus.OK);
+        mav.setViewName("aboutus");
+
+        return mav;
+    }
+
 
     @PostMapping("/search")
     public ModelAndView searchWord (@RequestBody MultiValueMap<String,String> payload, HttpSession sess) {
@@ -68,10 +91,9 @@ public class ProtectedController {
     }
 
     @GetMapping("/search")
-    public ModelAndView searchWord(HttpSession sess) {
+    public ModelAndView searchWord(@RequestParam(required = true, name = "term") String term, HttpSession sess) {
         logger.entering("ProtectedController","searchWord-GET");
 
-        String term = (String) sess.getAttribute("searchTerm");
         logger.info("searchTerm: "+term);
 
         String username = (String) sess.getAttribute("username");
@@ -80,6 +102,7 @@ public class ProtectedController {
 
         return searchWordModelAndView(term,username,opt);
     }
+
 
     public static ModelAndView searchWordModelAndView(String term, String username, Optional<List<Word>> opt) {
         ModelAndView mav = new ModelAndView();
@@ -96,6 +119,8 @@ public class ProtectedController {
 
 
         mav.addObject("word",term);
+        mav.addObject("audio",wordList.get(0).getAudio());
+        mav.addObject("phonetic",wordList.get(0).getPhonetic());
         mav.addObject("wordList",wordList);
         mav.addObject("username",username);
         mav.setStatus(HttpStatus.OK);
@@ -142,39 +167,97 @@ public class ProtectedController {
         }
 
         sess.setAttribute("isAdded",isAdded);
-
-        mav.addObject("username",username);
         mav.addObject("isAdded",isAdded);
         mav.addObject("favWord",favWord);
         mav.setStatus(HttpStatus.OK);
         mav.setViewName("userfavourite");
-
-        return mav;
+        return showFavListModelAndView(user.getUserId(),1,mav,username);
     }
 
-    @GetMapping("/favourite")
-    public ModelAndView addFavourite(HttpSession sess) {
+     @GetMapping("/favourite")
+     public ModelAndView getFavourite(@RequestParam(name="page",required = false) String page, HttpSession sess) {
+        logger.entering("ProtectedController","getFavourite");
 
-        logger.entering("ProtectedController","addFavourite-GET");
-
-        String favWord = (String) sess.getAttribute("favWord");
         String username = (String) sess.getAttribute("username");
-        boolean isAdded = (boolean) sess.getAttribute("isAdded");
-        List<String> favList = (List<String>) sess.getAttribute("favList");
 
-        ModelAndView mav = new ModelAndView();
+         ModelAndView mav = new ModelAndView();
+         mav.setViewName("favourite");
 
-        if (favList != null) {
-            mav.addObject("favList",favList);
-        }
+         // get userId
+         Optional<User> optUser = userService.findUserByUsername(username);
 
-        mav.addObject("username",username);
-        mav.addObject("isAdded",isAdded);
-        mav.addObject("favWord",favWord);
-        mav.setViewName("userfavourite");
+         if (optUser.isEmpty()) {
+             logger.severe(">>> addFavourite(): no user with username found");
+             mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+             mav.setViewName("error");
+             return mav;
+         }
 
-        return mav;
+         int userId = optUser.get().getUserId();
+         sess.setAttribute("uid",userId);
+
+
+         int pg;
+         if (page == null) {
+             return showFavListModelAndView(userId,1,mav,username);
+         }
+         else {
+             pg = Integer.parseInt(page);
+             return showFavListModelAndView(userId,pg,mav,username);
+         }
+
+     }
+
+     public ModelAndView showFavListModelAndView(int userId, int page, ModelAndView mav, String username) {
+
+         int next;
+         int prev = 0;
+         if (page == 1) {
+             prev = 0;
+             next = 2;
+         } else {
+             next = page + 1;
+             prev = page - 1;
+         }
+
+
+         int offset = (page - 1) * 10;
+             //display favourite list from database
+             Optional<List<String>> optFavList = wordService.getAllFavouriteByUser(userId, offset);
+
+         if (optFavList.isPresent()) {
+             List<String> favList = optFavList.get();
+             mav.addObject("favList", favList);
+         }
+
+         mav.addObject("username", username);
+         mav.addObject("next", next);
+         mav.addObject("prev", prev);
+         mav.setStatus(HttpStatus.OK);
+         return mav;
+     }
+
+     @PostMapping("/remove")
+     public ModelAndView deleteFavWord(@RequestBody MultiValueMap<String,String> payload, HttpSession sess ) {
+         logger.entering("ProtectedController","deleteFavWord");
+
+         String word = payload.getFirst("word");
+         logger.info("deleteTerm: "+word);
+
+         ModelAndView mav = new ModelAndView();
+         mav.setViewName("favourite");
+
+         String username = (String) sess.getAttribute("username");
+         int userId = (int) sess.getAttribute("uid");
+         boolean isDeleted = wordService.deleteFavWordByUser(word,userId);
+
+         if(!isDeleted) {
+             logger.warning("Failed to delete favourite word");
+         }
+
+         return showFavListModelAndView(userId, 1, mav,username);
     }
+
 
     @GetMapping("/activity/home")
     public ModelAndView showActivityHome(HttpSession sess) {
