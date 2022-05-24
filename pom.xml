@@ -11,7 +11,7 @@
 	<groupId>sg.nus.iss.</groupId>
 	<artifactId>miniProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>learn english</name>
+	<name>Vocablify</name>
 	<description>english learning tool for adults</description>
 	<properties>
 		<java.version>17</java.version>
