@@ -56,7 +56,7 @@
                         <h2 class="card-title">Choose the option which is most closely related to the words.</h2>
                         <h2>Area: <span data-th-text="${area}" class="card-title" style="color:Tomato;"></span></h2>
                         <h2>Level: <span data-th-text="${level}" class="card-title" style="color:Tomato;"></span></h2>
-                        <div data-th-each="q, qnsIterator:${quizList}" class="qns" style="width: 80rem;">
+                        <div data-th-each="q, qnsIterator:${quizList}" class="qns">
                             <h3 data-th-text="'Question '+${qnsIterator.index+1} +':'"></h3>
                             <span data-th-each="a: ${q.questionArray}" data-th-text="${a}+', '"></span>
                             <br>
